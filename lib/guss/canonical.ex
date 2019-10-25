@@ -14,8 +14,12 @@ defmodule Guss.Canonical do
     Canonical.Extensions.to_iodata(extensions)
   end
 
-  def canonicalise(%Resource{bucket: bucket, objectname: objectname}, :resource) do
+  def canonicalise(%Resource{bucket: bucket, objectname: objectname}, :resource) when not is_nil(bucket) do
     [?/, bucket, ?/, objectname]
+  end
+  
+  def canonicalise(%Resource{objectname: objectname}) do
+    [?/, objectname]
   end
 
   def canonicalise(resource, key) do
