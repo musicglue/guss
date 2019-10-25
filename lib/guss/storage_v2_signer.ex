@@ -57,8 +57,12 @@ defmodule Guss.StorageV2Signer do
     |> IO.iodata_to_binary()
   end
 
-  defp resource_name(%{bucket: bucket, objectname: objectname}) do
+  defp resource_name(%{bucket: bucket, objectname: objectname}) when not is_nil(bucket) do
     [?/, bucket, ?/, objectname]
+  end
+  
+  defp resource_name(%{objectname: objectname}) do
+    [?/, objectname]
   end
 
   defp http_verb(method) when is_atom(method), do: http_verb(Atom.to_string(method))
